@@ -30,6 +30,8 @@ mod error;
 mod message;
 mod worker;
 
+pub mod routing;
+
 pub use address::*;
 pub use error::*;
 pub use message::*;
