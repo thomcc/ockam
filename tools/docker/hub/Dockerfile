@@ -4,6 +4,7 @@ ARG BASE_IMAGE=ockam/base:latest
 # Stage 1
 FROM ${BUILDER_IMAGE}
 COPY . /work
+WORKDIR /work
 RUN set -xe; \
     cd implementations/elixir; \
     ../../gradlew build; \
