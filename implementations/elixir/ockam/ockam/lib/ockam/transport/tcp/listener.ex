@@ -184,7 +184,6 @@ if Code.ensure_loaded?(:ranch) do
           %{transport: transport, socket: socket, address: address} = state
         ) do
       with {:ok, message} <- set_onward_route(message, address),
-           {:ok, message} <- set_return_route(message, address),
            {:ok, encoded} <- Ockam.Wire.encode(@wire_encoder_decoder, message) do
         IO.inspect(message, label: "message inside connection return")
         IO.inspect(encoded, label: "encoded")
