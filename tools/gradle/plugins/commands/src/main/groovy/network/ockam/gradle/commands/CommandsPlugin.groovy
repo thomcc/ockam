@@ -38,7 +38,7 @@ class CommandsPlugin implements Plugin<Project> {
 
         // Loop over the list of directories to define tasks for every directory in the list
         commands.directories.each {
-          def dirPathComponents = it.path.split('/')
+          def dirPathComponents = it.path.split(File.separator)
           def dirPath = Paths.get(*dirPathComponents)
           def dirName = dirPathComponents.join('_')
           def dirTaskName = [commandTaskName, dirName].join('_')
