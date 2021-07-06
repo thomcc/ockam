@@ -1,10 +1,9 @@
-use crate::{SoftwareVault, VaultEntry, VaultError};
-use arrayref::array_ref;
-use ockam_vault_core::Buffer;
-use ockam_vault_core::{
-    AsymmetricVault, PublicKey, Secret, SecretAttributes, SecretPersistence, SecretType,
-    SecretVault, CURVE25519_PUBLIC_LENGTH, CURVE25519_SECRET_LENGTH,
+use crate::{
+    AsymmetricVault, Buffer, PublicKey, Secret, SecretAttributes, SecretPersistence, SecretType,
+    SecretVault, SoftwareVault, VaultEntry, VaultError, CURVE25519_PUBLIC_LENGTH,
+    CURVE25519_SECRET_LENGTH,
 };
+use arrayref::array_ref;
 
 impl SoftwareVault {
     fn ecdh_internal(
@@ -56,7 +55,8 @@ impl AsymmetricVault for SoftwareVault {
     }
 }
 
-#[cfg(test)]
+// TODO JDS
+/*#[cfg(test)]
 mod tests {
     use crate::SoftwareVault;
     use ockam_vault_test_attribute::*;
@@ -68,3 +68,4 @@ mod tests {
     #[vault_test]
     fn ec_diffie_hellman_curve25519() {}
 }
+*/

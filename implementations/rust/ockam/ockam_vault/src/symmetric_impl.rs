@@ -1,9 +1,9 @@
-use crate::{SoftwareVault, VaultError};
+use crate::{
+    Buffer, Secret, SecretType, SoftwareVault, SymmetricVault, VaultError, AES128_SECRET_LENGTH,
+    AES256_SECRET_LENGTH,
+};
 use aes_gcm::aead::{generic_array::GenericArray, Aead, NewAead, Payload};
 use aes_gcm::{Aes128Gcm, Aes256Gcm};
-use ockam_vault_core::{
-    Buffer, Secret, SecretType, SymmetricVault, AES128_SECRET_LENGTH, AES256_SECRET_LENGTH,
-};
 
 macro_rules! encrypt_op_impl {
     ($a:expr,$aad:expr,$nonce:expr,$text:expr,$type:ident,$op:ident) => {{
@@ -80,7 +80,8 @@ impl SymmetricVault for SoftwareVault {
     }
 }
 
-#[cfg(test)]
+// TODO JDS
+/*#[cfg(test)]
 mod tests {
     use crate::SoftwareVault;
     use ockam_vault_test_attribute::*;
@@ -91,3 +92,4 @@ mod tests {
     #[vault_test]
     fn encryption() {}
 }
+*/

@@ -4,10 +4,9 @@ use crate::{FfiVaultFatPointer, FfiVaultType};
 use lazy_static::lazy_static;
 use ockam_core::lib::convert::{TryFrom, TryInto};
 use ockam_core::lib::slice;
-use ockam_vault::SoftwareVault;
-use ockam_vault_core::{
+use ockam_vault::{
     AsymmetricVault, Hasher, PublicKey, Secret, SecretAttributes, SecretType, SecretVault,
-    SymmetricVault,
+    SoftwareVault, SymmetricVault,
 };
 use std::ops::DerefMut;
 use std::sync::{Arc, Mutex};

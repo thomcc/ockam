@@ -1,6 +1,4 @@
-use crate::VaultError;
-use ockam_vault_core::zdrop_impl;
-use ockam_vault_core::{Secret, SecretAttributes, SecretKey};
+use crate::{zdrop_impl, Secret, SecretAttributes, SecretKey, VaultError};
 use std::collections::BTreeMap;
 use tracing::info;
 use zeroize::Zeroize;
@@ -9,8 +7,7 @@ use zeroize::Zeroize;
 ///
 /// # Examples
 /// ```
-/// use ockam_vault::SoftwareVault;
-/// use ockam_vault_core::{SecretAttributes, SecretType, SecretPersistence, CURVE25519_SECRET_LENGTH, SecretVault, Signer, Verifier};
+/// use ockam_vault::{SoftwareVault, SecretAttributes, SecretType, SecretPersistence, CURVE25519_SECRET_LENGTH, SecretVault, Signer, Verifier};
 ///
 /// fn example() -> ockam_core::Result<()> {
 ///     let mut vault = SoftwareVault::default();

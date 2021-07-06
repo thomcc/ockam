@@ -10,7 +10,8 @@ use ockam_core::{
     Address, Result, Routed, Worker,
 };
 use ockam_node::Context;
-use ockam_vault_sync_core::{Vault, VaultSync};
+use ockam_vault::Vault;
+use ockam_vault::VaultSync;
 
 #[derive(Default)]
 pub struct EntityWorker {

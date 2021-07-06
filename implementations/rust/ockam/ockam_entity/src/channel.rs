@@ -2,7 +2,6 @@ use crate::{Identity, ProfileIdentifier};
 use async_trait::async_trait;
 use ockam_core::{Address, Message, Result, Route, Routed};
 use ockam_node::Context;
-use ockam_vault_sync_core::VaultSync;
 
 mod secure_channel_worker;
 pub(crate) use secure_channel_worker::*;
@@ -14,6 +13,7 @@ mod trust_policy;
 pub use trust_policy::*;
 mod local_info;
 pub use local_info::*;
+use ockam_vault::VaultSync;
 
 #[async_trait]
 pub trait SecureChannelTrait {

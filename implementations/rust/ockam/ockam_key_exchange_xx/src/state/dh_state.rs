@@ -1,6 +1,6 @@
 use crate::{XXError, XXVault, SHA256_SIZE};
 use ockam_core::Result;
-use ockam_vault_core::{
+use ockam_vault::{
     PublicKey, Secret, SecretAttributes, SecretPersistence, SecretType, AES256_SECRET_LENGTH,
 };
 

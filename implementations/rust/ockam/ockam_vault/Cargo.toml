@@ -1,6 +1,6 @@
 [package]
 name = "ockam_vault"
-version = "0.13.0"
+version = "0.13.0-dev"
 authors = ["Ockam Developers"]
 edition = "2018"
 license = "Apache-2.0"
@@ -18,23 +18,24 @@ crate-type = ["rlib", "cdylib"]
 [features]
 default = ["std"]
 std = ["ockam_core/std"]
-no_std = ["ockam_vault_core/heapless"]
+no_std = ["heapless"]
 
 [dependencies]
-ockam_core = { path = "../ockam_core", version = "0.19.0"                }
-ockam_vault_core = { path = "../ockam_vault_core", version = "0.13.0"                }
+ockam_core = { path = "../ockam_core", version = "0.19.0-dev"               }
+ockam_node = {path = "../ockam_node", version = "0.17.0-dev"              }
+async-trait = "0.1.42"
 arrayref = "0.3"
 aes-gcm = "0.9"
 curve25519-dalek = "3.1"
 ed25519-dalek = "1.0"
 hkdf = "0.11"
 rand = "0.8"
+heapless = { version = "0.7.3", optional = true }
 sha2 = "0.9"
+serde = {version = "1.0", features = ["derive"]}
+serde-big-array = "0.3"
+cfg-if = "1.0"
 x25519-dalek = "1.1"
 zeroize = { version = "1.1", features = ["zeroize_derive"] }
 tracing = "0.1.26"
-signature_bbs_plus = {path = "../signature_bbs_plus", version = "0.11.0"   }
-
-[dev-dependencies]
-ockam_vault_test_suite = { path = "../ockam_vault_test_suite", version = "0.8.0"                }
-ockam_vault_test_attribute = { path = "../ockam_vault_test_attribute", version = "0.10.0"               }
+signature_bbs_plus = {path = "../signature_bbs_plus", version = "0.11.0-dev"  }

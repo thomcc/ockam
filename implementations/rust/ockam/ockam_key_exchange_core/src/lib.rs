@@ -16,7 +16,7 @@
 )]
 
 use ockam_core::Result;
-use ockam_vault_core::Secret;
+use ockam_vault::Secret;
 use zeroize::Zeroize;
 
 /// A trait implemented by both Initiator and Responder peers.

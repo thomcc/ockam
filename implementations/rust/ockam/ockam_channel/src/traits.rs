@@ -1,5 +1,5 @@
 use ockam_key_exchange_core::{KeyExchanger, NewKeyExchanger};
-use ockam_vault_core::SymmetricVault;
+use ockam_vault::SymmetricVault;
 
 /// Vault with XX required functionality
 pub trait SecureChannelVault: SymmetricVault + Clone + Send + 'static {}

@@ -6,8 +6,9 @@ use crate::{
     ProfileChangeEvent, ProfileChangeProof, ProfileVault, SignatureType,
 };
 use ockam_core::{allow, deny};
-use ockam_vault::{PublicKey, SecretAttributes};
-use ockam_vault_core::{SecretPersistence, SecretType, CURVE25519_SECRET_LENGTH};
+use ockam_vault::{
+    PublicKey, SecretAttributes, SecretPersistence, SecretType, CURVE25519_SECRET_LENGTH,
+};
 use serde::{Deserialize, Serialize};
 
 /// Full history of [`Profile`] changes. History and corresponding secret keys are enough to recreate [`Profile`]

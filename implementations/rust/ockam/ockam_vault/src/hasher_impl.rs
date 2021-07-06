@@ -1,10 +1,8 @@
-use crate::software_vault::SoftwareVault;
-use crate::VaultError;
-use arrayref::array_ref;
-use ockam_vault_core::{
-    Hasher, Secret, SecretAttributes, SecretType, SecretVault, AES128_SECRET_LENGTH,
-    AES256_SECRET_LENGTH,
+use crate::{
+    software_vault::SoftwareVault, Hasher, Secret, SecretAttributes, SecretType, SecretVault,
+    VaultError, AES128_SECRET_LENGTH, AES256_SECRET_LENGTH,
 };
+use arrayref::array_ref;
 use sha2::{Digest, Sha256};
 
 impl Hasher for SoftwareVault {
@@ -77,8 +75,8 @@ impl Hasher for SoftwareVault {
         Ok(secrets)
     }
 }
-
-#[cfg(test)]
+// TODO JDS
+/*#[cfg(test)]
 mod tests {
     use crate::SoftwareVault;
     use ockam_vault_test_attribute::*;
@@ -93,3 +91,4 @@ mod tests {
     #[vault_test]
     fn hkdf() {}
 }
+*/

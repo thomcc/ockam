@@ -1,8 +1,8 @@
-use crate::software_vault::SoftwareVault;
-use crate::xeddsa::XEddsaVerifier;
-use crate::VaultError;
+use crate::{
+    software_vault::SoftwareVault, xeddsa::XEddsaVerifier, PublicKey, VaultError, Verifier,
+    CURVE25519_PUBLIC_LENGTH,
+};
 use arrayref::array_ref;
-use ockam_vault_core::{PublicKey, Verifier, CURVE25519_PUBLIC_LENGTH};
 
 impl Verifier for SoftwareVault {
     /// Verify signature with xeddsa algorithm. Only curve25519 is supported.

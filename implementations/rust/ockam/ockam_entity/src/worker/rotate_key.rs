@@ -5,7 +5,7 @@ use crate::{
     ProfileChangeEvent, ProfileChangeProof, ProfileChangeType, ProfileEventAttributes,
     ProfileState, Signature, SignatureType,
 };
-use ockam_vault::ockam_vault_core::{Hasher, SecretVault, Signer};
+use ockam_vault::{Hasher, SecretVault, Signer};
 use serde::{Deserialize, Serialize};
 use serde_big_array::big_array;
 

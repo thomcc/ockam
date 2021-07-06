@@ -2,7 +2,7 @@ use crate::{PreKeyBundle, X3DHError, X3dhVault, CSUITE};
 use ockam_core::lib::convert::TryFrom;
 use ockam_core::Result;
 use ockam_key_exchange_core::{CompletedKeyExchange, KeyExchanger};
-use ockam_vault_core::{
+use ockam_vault::{
     Secret, SecretAttributes, SecretPersistence, SecretType, AES256_SECRET_LENGTH,
     CURVE25519_SECRET_LENGTH,
 };

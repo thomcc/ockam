@@ -14,9 +14,18 @@
     unused_qualifications,
     warnings
 )]
+use ockam_vault::{AsymmetricVault, Hasher, SecretVault, SymmetricVault};
 
 mod error;
+mod initiator;
+mod new_key_exchanger;
+mod responder;
+mod state;
+
 pub use error::*;
+pub use initiator::*;
+pub use new_key_exchanger::*;
+pub use responder::*;
 
 /// The number of bytes in a SHA256 digest
 pub const SHA256_SIZE: usize = 32;
@@ -34,22 +43,14 @@ impl<D> XXVault for D where
 {
 }
 
-mod initiator;
-mod state;
-pub use initiator::*;
-mod responder;
-pub use responder::*;
-mod new_key_exchanger;
-pub use new_key_exchanger::*;
-use ockam_vault_core::{AsymmetricVault, Hasher, SecretVault, SymmetricVault};
-
 #[cfg(test)]
 mod tests {
-    use super::*;
+    /*  use super::*;
     use ockam_key_exchange_core::{KeyExchanger, NewKeyExchanger};
+    use ockam_vault::SecretVault;
     use ockam_vault::SoftwareVault;
-    use ockam_vault_core::SecretVault;
-    use ockam_vault_sync_core::VaultMutex;
+
+    // TODO JDS  use ockam_vault::VaultMutex;
 
     #[allow(non_snake_case)]
     #[test]
@@ -91,5 +92,5 @@ mod tests {
         let s2 = vault.secret_export(&responder.encrypt_key()).unwrap();
 
         assert_eq!(s1, s2);
-    }
+    }*/
 }

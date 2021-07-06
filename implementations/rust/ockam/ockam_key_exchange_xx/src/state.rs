@@ -1,7 +1,7 @@
 use crate::{XXError, XXVault, AES_GCM_TAGSIZE, SHA256_SIZE};
 use ockam_core::Result;
 use ockam_key_exchange_core::CompletedKeyExchange;
-use ockam_vault_core::{
+use ockam_vault::{
     PublicKey, Secret, SecretAttributes, SecretPersistence, SecretType, AES256_SECRET_LENGTH,
     CURVE25519_PUBLIC_LENGTH, CURVE25519_SECRET_LENGTH,
 };
@@ -368,16 +368,16 @@ impl<V: XXVault> State<V> {
 
 #[cfg(test)]
 mod tests {
-    use crate::state::{DhState, State};
+    /*  use crate::state::{DhState, State};
     use crate::{Initiator, Responder, XXVault};
     use ockam_core::hex::{decode, encode};
     use ockam_key_exchange_core::KeyExchanger;
-    use ockam_vault::SoftwareVault;
-    use ockam_vault_core::{
-        SecretAttributes, SecretPersistence, SecretType, SecretVault, SymmetricVault,
-        CURVE25519_SECRET_LENGTH,
+    use ockam_vault::{
+        SecretAttributes, SecretPersistence, SecretType, SecretVault, SoftwareVault,
+        SymmetricVault, CURVE25519_SECRET_LENGTH,
     };
-    use ockam_vault_sync_core::VaultMutex;
+
+    //TODO JDS use ockam_vault::VaultMutex;
 
     #[test]
     fn prologue() {
@@ -630,5 +630,5 @@ mod tests {
             h: Some(h),
             vault: vault.clone(),
         }
-    }
+    }*/
 }

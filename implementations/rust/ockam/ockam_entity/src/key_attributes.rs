@@ -1,5 +1,5 @@
 use ockam_vault::SecretAttributes;
-use ockam_vault_core::{SecretPersistence, SecretType, CURVE25519_SECRET_LENGTH};
+use ockam_vault::{SecretPersistence, SecretType, CURVE25519_SECRET_LENGTH};
 use serde::{Deserialize, Serialize};
 
 /// Meta-Attributes about a key

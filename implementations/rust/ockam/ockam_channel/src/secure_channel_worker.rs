@@ -5,7 +5,7 @@ use ockam_core::{
 };
 use ockam_key_exchange_core::KeyExchanger;
 use ockam_node::Context;
-use ockam_vault_core::Secret;
+use ockam_vault::Secret;
 use serde::{Deserialize, Serialize};
 use tracing::{debug, info};
 
