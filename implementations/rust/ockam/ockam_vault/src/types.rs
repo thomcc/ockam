@@ -1,4 +1,4 @@
-use crate::zdrop_impl;
+use crate::zeroize_on_drop;
 use cfg_if::cfg_if;
 use serde::{Deserialize, Serialize};
 use zeroize::Zeroize;
@@ -180,7 +180,7 @@ impl SecretAttributes {
     }
 }
 
-zdrop_impl!(SecretKey);
+zeroize_on_drop!(SecretKey);
 
 #[derive(Debug, Eq, PartialEq)]
 pub(crate) struct VaultEntry {
@@ -217,4 +217,4 @@ impl Zeroize for VaultEntry {
     }
 }
 
-zdrop_impl!(VaultEntry);
+zeroize_on_drop!(VaultEntry);

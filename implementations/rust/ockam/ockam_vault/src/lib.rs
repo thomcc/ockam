@@ -35,7 +35,7 @@ mod worker;
 mod software;
 /// Create drop implementation with zeroize call
 #[macro_export]
-macro_rules! zdrop_impl {
+macro_rules! zeroize_on_drop {
     ($name:ident) => {
         impl Drop for $name {
             fn drop(&mut self) {
