@@ -8,11 +8,15 @@ use ed25519_dalek::{PublicKey as EPublicKey, Signature, Verifier};
 use sha2::digest::Digest;
 use x25519_dalek::{PublicKey as XPublicKey, StaticSecret as XSecretKey};
 
+/// XEdDSA sign
 pub trait XEddsaSigner {
+    /// Sign
     fn sign(&self, msg: &[u8], nonce: &[u8; 64]) -> [u8; 64];
 }
 
+/// XEdDSA verify
 pub trait XEddsaVerifier {
+    /// Verify
     fn verify(&self, msg: &[u8], sig: &[u8; 64]) -> bool;
 }
 

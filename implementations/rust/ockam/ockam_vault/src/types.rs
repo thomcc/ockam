@@ -3,6 +3,12 @@ use cfg_if::cfg_if;
 use serde::{Deserialize, Serialize};
 use zeroize::Zeroize;
 
+/// Alias for 32 bytes
+pub type HashBytes = [u8; 32];
+
+/// Alias for 64 bytes
+pub type SignatureBytes = [u8; 64];
+
 /// Curve25519 private key length
 pub const CURVE25519_SECRET_LENGTH: usize = 32;
 /// Curve25519 public key length
@@ -52,6 +58,13 @@ cfg_if! {
     }
 }
 
+/// TODO JDS Data
+pub type Data = Buffer<u8>;
+
+/// TODO JDS Data Slice
+pub trait AsDataSlice: AsRef<[u8]> + Sync + Send {}
+impl<D: AsRef<[u8]> + Sync + Send> AsDataSlice for D {}
+
 /// Binary representation of a Secret.
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, Zeroize)]
 pub struct SecretKey(SecretKeyVec);
@@ -83,6 +96,29 @@ impl PublicKey {
 impl AsRef<[u8]> for PublicKey {
     fn as_ref(&self) -> &[u8] {
         &self.0
+    }
+}
+
+/// Handle to a cryptographic Secret
+/// Individual Vault implementations should map secret handles
+/// into implementation-specific Secret representations (e.g. binaries, or HSM references)
+/// stored inside Vault (e.g. using HashMap)
+#[derive(Serialize, Deserialize, Clone, PartialEq, Debug, Zeroize)]
+pub struct Secret {
+    index: usize,
+}
+
+impl Secret {
+    /// Return the index of this secret.
+    pub fn index(&self) -> usize {
+        self.index
+    }
+}
+
+impl Secret {
+    /// Create a new secret at the given index.
+    pub fn new(index: usize) -> Self {
+        Secret { index }
     }
 }
 
@@ -145,3 +181,40 @@ impl SecretAttributes {
 }
 
 zdrop_impl!(SecretKey);
+
+#[derive(Debug, Eq, PartialEq)]
+pub(crate) struct VaultEntry {
+    key_id: Option<String>,
+    key_attributes: SecretAttributes,
+    key: SecretKey,
+}
+
+impl VaultEntry {
+    pub fn key_id(&self) -> &Option<String> {
+        &self.key_id
+    }
+    pub fn key_attributes(&self) -> SecretAttributes {
+        self.key_attributes
+    }
+    pub fn key(&self) -> &SecretKey {
+        &self.key
+    }
+}
+
+impl VaultEntry {
+    pub fn new(key_id: Option<String>, key_attributes: SecretAttributes, key: SecretKey) -> Self {
+        VaultEntry {
+            key_id,
+            key_attributes,
+            key,
+        }
+    }
+}
+
+impl Zeroize for VaultEntry {
+    fn zeroize(&mut self) {
+        self.key.zeroize()
+    }
+}
+
+zdrop_impl!(VaultEntry);
