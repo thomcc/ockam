@@ -1,6 +1,6 @@
 use crate::{
-    AsDataSlice, Data, KeyId, PublicKey, Secret, SecretAttributes, SecretKey, SignatureBytes,
-    SmallBuffer, SoftwareVaultBuilder, VaultRequestMessage, VaultResponseMessage,
+    AsDataSlice, Data, HashBytes, KeyId, PublicKey, Secret, SecretAttributes, SecretKey,
+    SignatureBytes, SmallBuffer, SoftwareVaultBuilder, VaultRequestMessage, VaultResponseMessage,
     VaultSyncCoreError, VaultTrait,
 };
 use ockam_core::{Address, Result};
@@ -69,19 +69,19 @@ fn err<O>() -> Result<O> {
 
 impl VaultTrait for Vault {
     fn ecdh(&mut self, context: &Secret, peer_public_key: &PublicKey) -> Result<Secret> {
-        if let Res::Ecdh(s) = self.call(Ecdh {
+        if let Res::Ecdh(secret) = self.call(Ecdh {
             context: context.clone(),
             peer_public_key: peer_public_key.clone(),
         })? {
-            Ok(s)
+            Ok(secret)
         } else {
             err()
         }
     }
 
-    fn sha256<D: AsDataSlice>(&mut self, data: D) -> Result<[u8; 32]> {
-        if let Res::Sha256(s) = self.call(Sha256(data.as_ref().into()))? {
-            Ok(s)
+    fn sha256<D: AsDataSlice>(&mut self, data: D) -> Result<HashBytes> {
+        if let Res::Sha256(hash) = self.call(Sha256(data.as_ref().into()))? {
+            Ok(hash)
         } else {
             err()
         }
@@ -94,37 +94,37 @@ impl VaultTrait for Vault {
         input_key_material: Option<&Secret>,
         output_attributes: SmallBuffer<SecretAttributes>,
     ) -> Result<SmallBuffer<Secret>> {
-        if let Res::HkdfSha256(s) = self.call(HkdfSha256 {
+        if let Res::HkdfSha256(secret) = self.call(HkdfSha256 {
             salt: salt.clone(),
             data: info.as_ref().into(),
             ikm: input_key_material.cloned(),
             output_attributes,
         })? {
-            Ok(s)
+            Ok(secret)
         } else {
             err()
         }
     }
 
     fn load_secret_by_id<S: ToString>(&mut self, key_id: S) -> Result<Secret> {
-        if let Res::LoadSecretById(s) = self.call(LoadSecretById(key_id.to_string()))? {
-            Ok(s)
+        if let Res::LoadSecretById(secret) = self.call(LoadSecretById(key_id.to_string()))? {
+            Ok(secret)
         } else {
             err()
         }
     }
 
     fn find_id_for_key(&mut self, public_key: &PublicKey) -> Result<KeyId> {
-        if let Res::FindIdForKey(s) = self.call(FindIdForKey(public_key.clone()))? {
-            Ok(s)
+        if let Res::FindIdForKey(key_id) = self.call(FindIdForKey(public_key.clone()))? {
+            Ok(key_id)
         } else {
             err()
         }
     }
 
     fn generate_secret(&mut self, attributes: SecretAttributes) -> Result<Secret> {
-        if let Res::GenerateSecret(s) = self.call(GenerateSecret(attributes))? {
-            Ok(s)
+        if let Res::GenerateSecret(secret) = self.call(GenerateSecret(attributes))? {
+            Ok(secret)
         } else {
             err()
         }
@@ -135,37 +135,39 @@ impl VaultTrait for Vault {
         secret: D,
         attributes: SecretAttributes,
     ) -> Result<Secret> {
-        if let Res::ImportSecret(s) = self.call(ImportSecret {
+        if let Res::ImportSecret(imported_secret) = self.call(ImportSecret {
             secret: secret.as_ref().into(),
             attributes,
         })? {
-            Ok(s)
+            Ok(imported_secret)
         } else {
             err()
         }
     }
 
     fn export_secret(&mut self, context: &Secret) -> Result<SecretKey> {
-        if let Res::ExportSecret(s) = self.call(ExportSecret(context.clone()))? {
-            Ok(s)
+        if let Res::ExportSecret(secret_key) = self.call(ExportSecret(context.clone()))? {
+            Ok(secret_key)
         } else {
             err()
         }
     }
 
     fn load_secret_attributes(&mut self, context: &Secret) -> Result<SecretAttributes> {
-        if let Res::LoadSecretAttributes(s) = self.call(LoadSecretAttributes(context.clone()))? {
-            Ok(s)
+        if let Res::LoadSecretAttributes(secret_attributes) =
+            self.call(LoadSecretAttributes(context.clone()))?
+        {
+            Ok(secret_attributes)
         } else {
             err()
         }
     }
 
     fn load_public_key_for_secret(&mut self, context: &Secret) -> Result<PublicKey> {
-        if let Res::LoadPublicKeyForSecret(s) =
+        if let Res::LoadPublicKeyForSecret(public_key) =
             self.call(LoadPublicKeyForSecret(context.clone()))?
         {
-            Ok(s)
+            Ok(public_key)
         } else {
             err()
         }
@@ -180,11 +182,11 @@ impl VaultTrait for Vault {
     }
 
     fn sign<D: AsDataSlice>(&mut self, secret_key: &Secret, data: D) -> Result<SignatureBytes> {
-        if let Res::Sign(s) = self.call(Sign {
+        if let Res::Sign(signature) = self.call(Sign {
             secret_key: secret_key.clone(),
             data: data.as_ref().into(),
         })? {
-            Ok(s)
+            Ok(signature)
         } else {
             err()
         }
@@ -197,13 +199,13 @@ impl VaultTrait for Vault {
         nonce: N,
         aad: A,
     ) -> Result<Data> {
-        if let Res::EncryptAeadAesGcm(s) = self.call(EncryptAeadAesGcm {
+        if let Res::EncryptAeadAesGcm(data) = self.call(EncryptAeadAesGcm {
             context: context.clone(),
             plaintext: plaintext.as_ref().into(),
             nonce: nonce.as_ref().into(),
             aad: aad.as_ref().into(),
         })? {
-            Ok(s)
+            Ok(data)
         } else {
             err()
         }
@@ -216,13 +218,13 @@ impl VaultTrait for Vault {
         nonce: N,
         aad: A,
     ) -> Result<Data> {
-        if let Res::DecryptAeadAesGcm(s) = self.call(DecryptAeadAesGcm {
+        if let Res::DecryptAeadAesGcm(data) = self.call(DecryptAeadAesGcm {
             context: context.clone(),
             cipher_text: cipher_text.as_ref().into(),
             nonce: nonce.as_ref().into(),
             aad: aad.as_ref().into(),
         })? {
-            Ok(s)
+            Ok(data)
         } else {
             err()
         }
