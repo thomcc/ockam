@@ -25,7 +25,7 @@ pub trait VaultTrait: Zeroize + Send + 'static {
     ) -> Result<SmallBuffer<Secret>>;
 
     /// Return [`Secret`] for given key id
-    fn load_secret_by_id(&mut self, key_id: &str) -> Result<Secret>;
+    fn load_secret_by_id<S: ToString>(&mut self, key_id: S) -> Result<Secret>;
 
     /// Return KeyId for given public key
     fn find_id_for_key(&mut self, public_key: &PublicKey) -> Result<KeyId>;

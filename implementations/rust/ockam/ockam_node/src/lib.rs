@@ -26,9 +26,8 @@ pub use context::*;
 pub use executor::*;
 pub use mailbox::*;
 pub use messages::*;
-
 pub use node::{start_node, NullWorker};
-
+use ockam_core::{Address, Message, Result};
 use std::future::Future;
 use tokio::{runtime::Runtime, task};
 
@@ -60,4 +59,72 @@ where
     F::Output: Send,
 {
     task::spawn(f);
+}
+
+/// A representation of a worker on the 'client side'
+pub struct Stub {
+    /// Messaging context
+    pub ctx: Context,
+    /// Worker address
+    pub address: Address,
+}
+
+impl Clone for Stub {
+    fn clone(&self) -> Self {
+        block_future(&self.ctx.runtime(), async move {
+            Stub {
+                ctx: self
+                    .ctx
+                    .new_context(Address::random(0))
+                    .await
+                    .expect("new_context failed"),
+                address: self.address.clone(),
+            }
+        })
+    }
+}
+
+/// Messages that stubs can send and receive
+pub trait StubMessage: Message + Send + 'static {}
+
+impl<M> StubMessage for M where M: Message + Send + 'static {}
+
+impl Stub {
+    /// Create a new stub for the worker at Address, using Context
+    pub fn new(ctx: Context, address: Address) -> Self {
+        Stub { ctx, address }
+    }
+
+    /// Asynchronously cast a message to a worker
+    pub async fn async_cast<M: StubMessage>(&self, msg: M) -> Result<()> {
+        self.ctx.send(self.address.clone(), msg).await
+    }
+
+    /// Cast a message to a worker
+    pub fn cast<M: StubMessage>(&self, msg: M) -> Result<()> {
+        block_future(
+            &self.ctx.runtime(),
+            async move { self.async_cast(msg).await },
+        )
+    }
+
+    /// Asynchronously call a worker method and expect a response message
+    pub async fn async_call<I: StubMessage, O: StubMessage>(&self, msg: I) -> Result<O> {
+        let mut ctx = self
+            .ctx
+            .new_context(Address::random(0))
+            .await
+            .expect("new_context failed");
+        ctx.send(self.address.clone(), msg).await?;
+        let msg = ctx.receive::<O>().await?;
+        Ok(msg.take().body())
+    }
+
+    /// Call a worker method and expect a response message
+    pub fn call<I: StubMessage, O: StubMessage>(&self, msg: I) -> Result<O> {
+        block_future(
+            &self.ctx.runtime(),
+            async move { self.async_call(msg).await },
+        )
+    }
 }

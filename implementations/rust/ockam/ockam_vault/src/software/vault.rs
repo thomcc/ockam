@@ -206,13 +206,14 @@ impl VaultTrait for SoftwareVault {
         Ok(secrets)
     }
 
-    fn load_secret_by_id(&mut self, key_id: &str) -> ockam_core::Result<Secret> {
+    fn load_secret_by_id<S: ToString>(&mut self, key_id: S) -> ockam_core::Result<Secret> {
+        let key_id = key_id.to_string();
         let index = self
             .entries
             .iter()
             .find(|(_, entry)| {
                 if let Some(e_key_id) = entry.key_id() {
-                    e_key_id == key_id
+                    e_key_id == &key_id
                 } else {
                     false
                 }
