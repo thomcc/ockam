@@ -122,6 +122,7 @@ impl SoftwareVault {
         }
     }
 }
+
 impl VaultTrait for SoftwareVault {
     fn ecdh(
         &mut self,

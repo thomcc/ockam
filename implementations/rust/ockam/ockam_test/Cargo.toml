@@ -1,0 +1,18 @@
+[package]
+name = "ockam_test"
+categories = ["cryptography", "asynchronous", "authentication","network-programming", "embedded"]
+description = """Ockam test suite.
+"""
+version = "0.8.0-dev"
+authors = ["Ockam Developers"]
+edition = "2018"
+license = "Apache-2.0"
+keywords = ["ockam", "crypto", "cryptography", "network-programming", "encryption"]
+readme = "README.md"
+homepage = "https://github.com/ockam-network/ockam"
+repository = "https://github.com/ockam-network/ockam/tree/develop/implementations/rust/ockam/ockam_test"
+
+[dependencies]
+ockam_core = {path = "../ockam_core" }
+ockam_node = {path = "../ockam_node"}
+ockam_vault = {path = "../ockam_vault"}
