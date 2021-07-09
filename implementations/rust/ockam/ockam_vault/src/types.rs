@@ -58,10 +58,10 @@ cfg_if! {
     }
 }
 
-/// TODO JDS Data
+/// TODO JDS Data description
 pub type Data = Buffer<u8>;
 
-/// TODO JDS Data Slice
+/// TODO JDS Data Slice description
 pub trait AsDataSlice: AsRef<[u8]> + Sync + Send {}
 impl<D: AsRef<[u8]> + Sync + Send> AsDataSlice for D {}
 

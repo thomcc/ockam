@@ -5,7 +5,7 @@ use crate::{
 use ockam_core::Result;
 use zeroize::Zeroize;
 
-/// TODO JDS The Vault trait
+/// TODO JDS The Vault trait description
 pub trait VaultTrait: Zeroize + Send + 'static {
     /// Compute Elliptic-Curve Diffie-Hellman using this secret key
     /// and the specified uncompressed public key
