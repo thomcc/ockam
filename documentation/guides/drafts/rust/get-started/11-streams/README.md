@@ -8,15 +8,12 @@ title: Reliable message delivery with Streams
 
 In the previous guides we were sending messages to remote workers without much delivery guarantees.
 The workers were sending messages hoping that receiving end would receive them. This messaging mode is
-sometimes called "at most once delivery"
+sometimes called "at most once delivery".
 
 In real life distributed systems are constantly experiencing network interruptions while workers and devices
 themselves may crash and restart.
 
-To address that message brokers introduce message buffers or logs, which store messages and can re-deliver
-them after failures.
-Ockam Hub integrates with message brokers using Ockam Streams.
-To communicate with Ockam Streams on the Hub, the application can use the Ockam Streams Protocol.
+To address that message brokers introduce message buffers or logs, which store messages and can re-deliver them after failures. Ockam Hub integrates with message brokers using Ockam Streams. To communicate with Ockam Streams on the Hub, the application can use the Ockam Streams Protocol.
 
 More about the stream protocol can be found here: https://github.com/ockam-network/proposals/tree/main/design/0009-stream-protocol
 
@@ -57,7 +54,7 @@ touch examples/13-stream-over-cloud-node-responder.rs
 Add the following code to this file:
 
 ```rust
-use ockam::{stream::Stream, Context, Result, Route, TcpTransport, TCP};
+use ockam::{stream::Stream, Context, Result, route, TcpTransport, TCP};
 use ockam_get_started::Echoer;
 use std::time::Duration;
 
@@ -76,7 +73,7 @@ async fn main(ctx: Context) -> Result<()> {
         .client_id("stream-over-cloud-node-initiator")
         .with_interval(Duration::from_millis(100))
         .connect(
-            Route::new().append_t(TCP, "127.0.0.1:4000"),
+            route![(TCP, "127.0.0.1:4000")],
             // Stream name from THIS to OTHER
             "test-b-a",
             // Stream name from OTHER to THIS
@@ -116,7 +113,7 @@ async fn main(mut ctx: Context) -> Result<()> {
         .client_id("stream-over-cloud-node-initiator")
         .with_interval(Duration::from_millis(100))
         .connect(
-            Route::new().append_t(TCP, "127.0.0.1:4000"),
+            route![(TCP, "127.0.0.1:4000")],
             // Stream name from THIS node to the OTHER node
             "test-a-b",
             // Stream name from OTHER to THIS

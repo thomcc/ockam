@@ -15,9 +15,7 @@ This way we'll achieve both end-to-end encryption and reliable message delivery.
 
 ## App worker
 
-We're going to run two nodes communicating via Ockam Hub. 
-One of them will run the secure channel listener and the echoer worker,
-another will run the secure channel initiator and send the message to echoer.
+We're going to run two nodes communicating via Ockam Hub. One of them will run the secure channel listener and the echoer worker, another will run the secure channel initiator and send the message to echoer.
 
 
 ### Listener node
@@ -53,7 +51,7 @@ async fn main(ctx: Context) -> Result<()> {
         .client_id("secure-channel-over-stream-over-cloud-node-responder")
         .with_interval(Duration::from_millis(100))
         .connect(
-            Route::new().append_t(TCP, "127.0.0.1:4000"),
+            route![(TCP, "127.0.0.1:4000")],
             // Stream name from THIS node to the OTHER node
             "sc-test-b-a",
             // Stream name from OTHER to THIS
@@ -98,7 +96,7 @@ async fn main(mut ctx: Context) -> Result<()> {
         .client_id("secure-channel-over-stream-over-cloud-node-initiator")
         .with_interval(Duration::from_millis(100))
         .connect(
-            Route::new().append_t(TCP, "127.0.0.1:4000"),
+            route![(TCP, "127.0.0.1:4000")],
             // Stream name from THIS node to the OTHER node
             "sc-test-a-b",
             // Stream name from OTHER to THIS
@@ -158,4 +156,3 @@ You now should see the log message from the initiaror: `Reply via secure channel
 
 <div style="display: none; visibility: hidden;">
 </div>
-
