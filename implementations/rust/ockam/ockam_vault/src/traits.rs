@@ -1,5 +1,5 @@
 use crate::{
-    AsDataSlice, Data, HashBytes, KeyId, PublicKey, Secret, SecretAttributes, SecretKey,
+    AsDataSlice, Data, HashBytes, KeyId, PublicKey, Rng, Secret, SecretAttributes, SecretKey,
     SignatureBytes, SmallBuffer,
 };
 use ockam_core::Result;
@@ -80,4 +80,9 @@ pub trait VaultTrait: Zeroize + Send + 'static {
         public_key: &PublicKey,
         data: D,
     ) -> Result<bool>;
+
+    /// CSPRNG
+    fn rng(&self) -> Rng {
+        Rng::new()
+    }
 }

@@ -13,8 +13,18 @@
     warnings
 )]
 
+mod error;
+mod request;
+mod response;
+mod rng;
+mod traits;
+mod types;
+mod vault;
+mod worker;
+
 pub use error::*;
 pub use error::*;
+pub use rng::*;
 pub use software::vault_builder::*;
 pub use software::xeddsa::*;
 pub use software::*;
@@ -22,14 +32,6 @@ pub use traits::*;
 pub use types::*;
 pub use vault::*;
 pub use worker::*;
-
-mod error;
-mod request;
-mod response;
-mod traits;
-mod types;
-mod vault;
-mod worker;
 
 // Software Vault
 mod software;
