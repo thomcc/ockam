@@ -2,23 +2,19 @@
 
 ## Introduction
 
-In the previous guide we learned how to create a cloud node and connect to it using the TCP transport.
+In the previous guide we learned how to [create a cloud node](../xx-cloud-node) and connect to it using the TCP transport.
 
-**TODO: link to previous guide?**
-
-Cloud nodes can be used for device discovery since devices may not be able to connect to each other directly.
-
+Cloud nodes can be used as proxies to connect devices not exposed by public hostnames or IPs. In this case the cloud node would redirect the traffic from one node to another using the transport connections established by devices.
 
 ## Discovery using forwarding
 
-In this guide we're going to use the "forwarding_service" - a Hub Node service which allows a device to connect to another device using a temporary device alias.
+In this guide we're going to use the "forwarding_service" - a Hub Node service which allows a device to connect to another device using a temporary route alias.
 
-In order to do that, a device we call "responder" is going to create the alias first, which can be used by another device we call "initiator" to send messages to responder.
+In order to do that, a device we call "responder" is going to create an alias first, which can be used by another device we call "initiator" to send messages to responder.
 
 After discovery step both devices would have a route to each other, which they can use to exchange messages.
 
-**image here**
-
+<img src="./Discovery.png" width="70%">
 
 ## Application code
 
@@ -39,7 +35,7 @@ use ockam_get_started::Echoer;
 #[ockam::node]
 async fn main(ctx: Context) -> Result<()> {
     // Create a cloud node by going to https://hub.ockam.network
-    let cloud_node_tcp_address = "Paste the tcp address of your cloud node here.";
+    let cloud_node_tcp_address = "<Your node host copied from hub.ockam.network>:4000.";
 
     // Initialize the TCP Transport.
     let tcp = TcpTransport::create(&ctx).await?;
@@ -65,6 +61,7 @@ This node will run an `echoer` worker to reply to the messages sent from the ini
 ### Run responder
 
 You need to get the temporary forwarding address from the Hub Node in order to configure the initiator properly.
+
 To do that run:
 
 ```
@@ -89,11 +86,11 @@ use ockam::{route, Context, Result, TcpTransport, TCP};
 #[ockam::node]
 async fn main(mut ctx: Context) -> Result<()> {
     // Create a cloud node by going to https://hub.ockam.network
-    let cloud_node_tcp_address = "Paste the tcp address of your cloud node here.";
+    let cloud_node_tcp_address = "<Your node host copied from hub.ockam.network>:4000";
 
     // Run 11-forwarding-via-a-cloud-node-responder,
     // it will print the forwarding address of echoer on your cloud node
-    let echoer_forwarding_address = "Paste the forwarding address of the echoer here.";
+    let echoer_forwarding_address = "<Address copied from responder output>";
 
     // Initialize the TCP Transport.
     let tcp = TcpTransport::create(&ctx).await?;
@@ -125,8 +122,10 @@ async fn main(mut ctx: Context) -> Result<()> {
 cargo run --example xx-discovery-using-cloud-node-initiator
 ```
 
+You should expect a log message `App Received: Hello Ockam!`
+
 
 ## Message flow
 
-**Message flow here**
 
+<img src="./Sequence.png" width="100%">

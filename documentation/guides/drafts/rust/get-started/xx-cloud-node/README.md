@@ -1,49 +1,35 @@
-Ockam hub guides:
-
-10-routing-to-a-cloud-node:
-
-Intro into hub nodes
-
-Create your node here: link to hub node creation guide OR section about hub node creation
-
-Use the URL in the following example:
-
-10-routing-to-a-cloud-node.rs
-
-API to use host input in `let cloud_node_tcp_address = "";`
-
-Ockam hub: add "copy to clipboard" button to the hostnames
-
-
 # Using Cloud nodes
 
 ## Ockam Hub
 
-In order to connect devices to each other and to cloud services, Ockam system implements Cloud Nodes.
-These nodes are provided by the Ockam Hub service: hub.ockam.network
+In previous examples we learned how to send messages between nodes using [transports](../07-routing-over-transport).
+
+But to connect two nodes at least one of them must be exposed via hostname or a public IP, which makes connecting devices challenging. To address that we can use special kind of node running on the cloud with a fixed hostname and make it forward messages between devices. We call such nodes Ockam Hub Nodes.
+
+You can host a Hub Node yourself, or use one provided by Ockam service at https://hub.ockam.network
 
 Hub Nodes run persistent workers, which are called services. Services can be used for discovery, routing and
-integration with various services used by the application.
+integration with various cloud services used by the application.
 
 This guide shows how to start a new Hub Node, connect an application and use services in there.
 
 ## Creating Hub Nodes
 
-Navigate to http://hub.ockam.network
+1. Navigate to http://hub.ockam.network
 
-In order to create a node, you need to log in using your GitHub account:
+1. In order to create a node, you need to log in using your GitHub account:
 
-**image here**
+    <img src="./Github-log-in.png" width="100%">
 
-After that you can create a routing node:
+1. After that you can create a routing node:
 
-**image here**
+    <img src="./Create-node.png" width="100%">
 
-When the node status changes to `Running`, the node is ready to use.
+1. When the node status changes to `Running`, the node is ready to use.
 
-**image here**
+1. You can copy the node name from the nodes list and use in the following example.
 
-You can copy the node name from the nodes list and use in the following example.
+    <img src="./Node-hostname.png" width="100%">
 
 ## Example service usage
 
@@ -104,6 +90,6 @@ cargo run --example 10-routing-to-a-cloud-node
 ```
 
 <div style="display: none; visibility: hidden;">
-<hr><b>Next:</b> <a href="../11-discovery-using-cloud-node">11. Discovery using cloud node</a>
+<hr><b>Next:</b> <a href="../xx-discovery-using-cloud-node">11. Discovery using cloud node</a>
 </div>
 
