@@ -90,6 +90,6 @@ cargo run --example 10-routing-to-a-cloud-node
 ```
 
 <div style="display: none; visibility: hidden;">
-<hr><b>Next:</b> <a href="../xx-discovery-using-cloud-node">11. Discovery using cloud node</a>
+<hr><b>Next:</b> <a href="../xx-discovery-using-cloud-node">XX. Discovery using cloud node</a>
 </div>
 

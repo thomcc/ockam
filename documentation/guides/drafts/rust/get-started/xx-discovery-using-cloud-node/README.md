@@ -35,7 +35,7 @@ use ockam_get_started::Echoer;
 #[ockam::node]
 async fn main(ctx: Context) -> Result<()> {
     // Create a cloud node by going to https://hub.ockam.network
-    let cloud_node_tcp_address = "<Your node host copied from hub.ockam.network>:4000.";
+    let cloud_node_tcp_address = "<Your node host copied from hub.ockam.network>:4000";
 
     // Initialize the TCP Transport.
     let tcp = TcpTransport::create(&ctx).await?;
@@ -76,7 +76,7 @@ You will see the log message `Forwarding address of echoer: ...` - copy the addr
 touch examples/xx-discovery-using-cloud-node-initiator.rs
 ```
 
-Add the following code to this file:
+Add the following code to this file (replace fields in `<>` with values you copied):
 
 ```rust
 // This node routes a message, to a different node, using a forwarding address on the cloud node.
@@ -129,3 +129,9 @@ You should expect a log message `App Received: Hello Ockam!`
 
 
 <img src="./Sequence.png" width="100%">
+
+
+<div style="display: none; visibility: hidden;">
+<hr><b>Next:</b> <a href="../xx-secude-channel-over-cloud-node">XX. Secure channel over cloud node</a>
+</div>
+
