@@ -1,7 +1,7 @@
-use std::{sync::Arc, time::Duration};
+use std::{future::Future, pin::Pin, sync::Arc, time::Duration};
 
 use ockam_core::{
-    Address, AddressSet, LocalMessage, Message, Result, Route, TransportMessage, Worker,
+    Address, AddressSet, LocalMessage, Message, Result, Route, Routed, TransportMessage, Worker,
 };
 use tokio::{
     runtime::Runtime,
@@ -143,6 +143,15 @@ impl Context {
             .await
             .ok_or(Error::InternalIOFailure)?
             .map(|_| ())?)
+    }
+
+    /// Start a new [function worker](FuncWorker) at [`Address`](ockam_core::Address).
+    pub async fn start_function_worker<NM, S>(&self, address: S, func: FuncWorker<NM>) -> Result<()>
+    where
+        S: Into<AddressSet>,
+        NM: Message + Send + 'static,
+    {
+        self.start_worker(address, FunctionWorkerWrapper(func)).await
     }
 
     /// Signal to the local application runner to shut down
@@ -403,5 +412,50 @@ impl Context {
                 }
             }
         }
+    }
+}
+
+/// The type of function workers, used with [`Context::start_function_worker`].
+///
+/// A function worker is a stateless worker that just responds to messages. You
+/// can define these by using hte [`ockam::worker`](ockam_core::worker) macro on
+/// an async function.
+///
+/// ```ignore
+/// use ockam::{Context, Routed, Result};
+///
+/// // Defines a function worker with functionality equivalent to the Echoer example
+/// // (from `ockam`'s "Getting Started" guide).
+/// #[ockam::worker]
+/// async fn echoer(ctx: &mut Context, mst: Routed<String>) -> Result<()> {
+///     println!("Address: {}, Received: {}", ctx.address(), msg);
+///     // Echo the message body back on its return_route.
+///     ctx.send(msg.return_route(), msg.body()).await
+/// }
+///
+/// // Later, register it on a `Context` like:
+/// ctx.start_function_worker("echoer", echoer).await?;
+/// ```
+pub type FuncWorker<Msg> = for<'ctx> fn(&'ctx mut Context, Routed<Msg>) -> Pin<Box<dyn Future<Output = Result<()>> + Send + 'ctx>>;
+
+/// Internal wrapper to convert a `FuncWorker<impl Msg>` into something that implements
+/// [`Worker`] (used in [`Context::create_function_worker`])
+struct FunctionWorkerWrapper<Msg: Message>(FuncWorker<Msg>);
+
+#[ockam_core::worker]
+impl<Msg> Worker for FunctionWorkerWrapper<Msg>
+where
+    Msg: Message,
+{
+    type Context = Context;
+    type Message = Msg;
+
+    async fn handle_message(
+        &mut self,
+        context: &mut Context,
+        msg: Routed<Msg>,
+    ) -> Result<()>
+    {
+        (self.0)(context, msg).await
     }
 }
