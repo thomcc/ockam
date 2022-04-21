@@ -45,7 +45,7 @@ signature_bls = { version = "0.10.0-dev"                , path = "../signature_b
 serde_bare = "0.4"
 serde = { version = "1.0", default-features = false, features = ["derive"], optional = true }
 serde-big-array = "0.3"
-sha2 = "0.9"
+sha2 = "0.10"
 tracing = "0.1"
 rand = "0.8"
 hex = { version = "0.4", default-features = false }
