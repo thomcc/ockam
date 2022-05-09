@@ -2,12 +2,13 @@ use crate::Context;
 use core::time::Duration;
 use futures::future::{AbortHandle, Abortable};
 use ockam_core::{Address, Message, Result};
+use std::sync::Arc;
 
 /// Allow to send message to destination address periodically after some delay
 /// Only one scheduled heartbeat allowed at a time
 /// Dropping this handle cancels scheduled heartbeat
 pub struct DelayedEvent<M: Message + Clone> {
-    ctx: Context,
+    ctx: Arc<Context>,
     destination_addr: Address,
     msg: M,
     abort_handle: Option<AbortHandle>,
@@ -29,7 +30,7 @@ impl<M: Message + Clone> DelayedEvent<M> {
         let child_ctx = ctx.new_context(Address::random_local()).await?;
 
         let heartbeat = Self {
-            ctx: child_ctx,
+            ctx: Arc::new(child_ctx),
             destination_addr: destination_addr.into(),
             abort_handle: None,
             msg,
@@ -50,8 +51,8 @@ impl<M: Message + Clone> DelayedEvent<M> {
     /// Schedule heartbeat. Cancels already scheduled heartbeat if there is such heartbeat
     pub async fn schedule(&mut self, duration: Duration) -> Result<()> {
         self.cancel();
+        let child_ctx = self.ctx.clone();
 
-        let child_ctx = self.ctx.new_context(Address::random_local()).await?;
         let destination_addr = self.destination_addr.clone();
         let msg = self.msg.clone();
 
